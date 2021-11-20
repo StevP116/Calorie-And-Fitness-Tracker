@@ -66,7 +66,8 @@ function DisplayExerciseView({ route, navigation }) {
     // Exercises have to be displayed here. 
     return (
         <View style={styles.container}>
-            <ScrollView contentContainerStyle={styles.main}>
+            <ScrollView contentContainerStyle={styles.main}
+            >
             <View style={styles.button}>
                 <Text style={{ fontSize: 27, marginBottom: 10, marginRight: 10, fontWeight: "bold" }}>Exercises</Text>
                 <Icon name="fitness" size={30} color="#000" />
@@ -87,14 +88,22 @@ function DisplayExerciseView({ route, navigation }) {
                             username: route.params.username,
                             token: route.params.token
                         })}
-                            title="Add Exercise" />
+                            title="Add Exercise" 
+                            accessible={true}
+                            accessibilityLabel="Add Exercise button. Navigates to Add Exercise view, where you will enter 
+                            exercise details to add an exercise to your account."
+                            />
                     </View>
                     <Button onPress={() => navigation.navigate('TodayView',
                         {
                             profile: route.params.profile,
                             username: route.params.username,
                             token: route.params.token
-                        })} title="Today View" />
+                        })} title="Today View" 
+                        accessible={true}
+                            accessibilityLabel="Today View button. Navigates to Today View where you can view exercises 
+                            completed today, as well as progress made towards your daily exercise goal."
+                        />
                 </View>
             </ScrollView>
         </View>

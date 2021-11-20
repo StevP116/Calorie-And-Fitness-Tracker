@@ -68,7 +68,9 @@ function LoginScreen({ route, navigation }) {
 
   return (
       <ScrollView contentContainerStyle={styles.container}>
-          <Text style={{fontSize: 27, fontWeight: "bold"}}>
+          <Text style={{fontSize: 27, fontWeight: "bold"}}
+          accessible={true}
+          accessibilityLabel="Fitness Tracker">
               Fitness Tracker
           </Text>
           <TextInput value={username} onChangeText={setUsername} placeholder='Username' style={styles.input}/>
@@ -76,9 +78,13 @@ function LoginScreen({ route, navigation }) {
           <View style={{margin:7}} />
           <View style={styles.button}>
               <View style={styles.button1}>
-                  <Button onPress={handleLogin} title="Login"/>
+                  <Button onPress={handleLogin} title="Login"
+                  accessible={true}
+                  accessibilityLabel="Login button. Logs into your account and navigates to Today View"/>
               </View>
-              <Button onPress={() => navigation.navigate('SignUpScreen')} title="Sign Up"/>
+              <Button onPress={() => navigation.navigate('SignUpScreen')} title="Sign Up"
+              accessible={true}
+              accessibilityLabel="Sign Up button. Navigates to Account Sign Up Screen"/>
           </View>
       </ScrollView>
   );
@@ -121,7 +127,9 @@ function App() {
                 onPress={() => navigation.navigate('LoginScreen')}
                 title="Logout"
                 color="fff"
-             /> 
+                accessible={true}
+                accessibilityLabel="Logout button. Logs you out of your account and navigates to Log in screen."
+                /> 
             ),
           })}
         />
@@ -140,7 +148,9 @@ function App() {
                 onPress={() => navigation.navigate('LoginScreen')}
                 title="Logout"
                 color="fff"
-             /> 
+                accessible={true}
+                accessibilityLabel="Logout button. Logs you out of your account and navigates to Log in screen."
+                /> 
             ),
           })}
         />
@@ -158,7 +168,9 @@ function App() {
                 onPress={() => navigation.navigate('LoginScreen')}
                 title="Logout"
                 color="fff"
-             /> 
+                accessible={true}
+                accessibilityLabel="Logout button. Logs you out of your account and navigates to Log in screen."
+                /> 
             ),
           })}
         />
@@ -176,7 +188,9 @@ function App() {
                 onPress={() => navigation.navigate('LoginScreen')}
                 title="Logout"
                 color="fff"
-             /> 
+                accessible={true}
+                accessibilityLabel="Logout button. Logs you out of your account and navigates to Log in screen."
+                /> 
             ),
           })}
         />

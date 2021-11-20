@@ -119,7 +119,10 @@ function TodayView({ route, navigation }) {
                             username: route.params.username,
                             token: route.params.token,
                             activities: activities
-                        })} title="Exercises" />
+                        })} title="Exercises" 
+                        accessible={true}
+                        accessibilityLabel="Exercises button. Navigates you to Exercises view. All of your exercises are visible here"
+                        />
                 </View>
             </ScrollView>
         </View>

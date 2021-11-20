@@ -50,9 +50,15 @@ function SignUpScreen( {route, navigation} ) {
             <TextInput value={password} style={styles.input} secureTextEntry={true} onChangeText={setPassword} placeholder='Password' />
             <View style={styles.button}>
                 <View style={styles.button1}>
-                    <Button onPress={handleSignUp}  title="Create Account"/>
+                    <Button onPress={handleSignUp}  title="Create Account"
+                    accessible={true}
+                    accessibilityLabel="Create Account button. Creates your account and navigates back to login screen"
+                    />
                 </View>
-                <Button onPress={() => navigation.navigate('LoginScreen')} title="Nevermind!"/>
+                <Button onPress={() => navigation.navigate('LoginScreen')} title="Nevermind!"
+                accessible={true}
+                accessibilityLabel="Nevermind button. Navigates back to login screen"
+                />
             </View>
         </ScrollView>
     );

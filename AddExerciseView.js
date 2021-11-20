@@ -76,20 +76,38 @@ function AddExerciseView({ route, navigation }) {
                     </Text>
                     <Icon name="add" size={30} color="#000" />
                 </View>
-                <Text style={{ fontSize: 15, fontWeight: "bold" }}>Exercise Name</Text>
-                <TextInput placeholderTextColor={'gray'} placeholder='Ex: Jogging' value={exerciseName} onChangeText={setExerciseName} style={styles.input} />
-                <Text style={{ fontSize: 15, fontWeight: "bold" }}>Duration (minutes)</Text>
-                <TextInput placeholderTextColor={'gray'} value={duration.toString()} onChangeText={setDuration} style={styles.input} />
-                <Text style={{ fontSize: 15, fontWeight: "bold" }}>Calories Burnt</Text>
+                <Text style={{ fontSize: 15, fontWeight: "bold" }}
+                accessible={true}
+                accessibilityLabel="Exercise name. Enter the exercise name in the text box below"
+                >Exercise Name</Text>
+                <TextInput placeholderTextColor={'gray'} placeholder='Ex: Jogging' value={exerciseName} onChangeText={setExerciseName} style={styles.input}
+                />
+                <Text style={{ fontSize: 15, fontWeight: "bold" }}
+                accessible={true}
+                accessibilityLabel="Duration. Enter the exercise duration in minutes in the text box below"
+                >Duration (minutes)</Text>
+                <TextInput placeholderTextColor={'gray'} value={duration.toString()} onChangeText={setDuration} style={styles.input}
+                />
+                <Text style={{ fontSize: 15, fontWeight: "bold" }}
+                accessible={true}
+                accessibilityLabel="Calories Burnt. Enter the number of calories that were burned during the exercise in the text box below"
+                >Calories Burnt</Text>
                 <TextInput placeholderTextColor={'gray'} value={caloriesBurned.toString()} onChangeText={setCaloriesBurned} style={styles.input} />
-                <Text style={{ fontSize: 15, fontWeight: "bold" }}>Exercise Date and Time</Text>
+                <Text style={{ fontSize: 15, fontWeight: "bold" }}
+                >Exercise Date and Time</Text>
                 <Text>{date.toString()}</Text>
                 <View style={styles.button}>
                     <View style={styles.button1}>
                         <Button
-                            title="Set Date" onPress={showDatepicker} />
+                            title="Set Date" onPress={showDatepicker} 
+                            accessible={true}
+                            accessibilityLabel="Set Date button. Navigates to the Set Date modal to set the date of the exercise."
+                            />
                     </View>
-                    <Button title="Set Time" onPress={showTimepicker} />
+                    <Button title="Set Time" onPress={showTimepicker} 
+                    accessible={true}
+                    accessibilityLabel="Set Time button. Navigates to the Set Time modal to set the time of the exercise."
+                    />
                     {show && (
                         <DateTimePicker
                             testID="dateTimePicker"
@@ -105,14 +123,20 @@ function AddExerciseView({ route, navigation }) {
                 <View style={styles.button}>
                     <View style={styles.button1}>
                         <Button
-                            title="Save Exercise" onPress={handleSaveExercise} />
+                            title="Save Exercise" onPress={handleSaveExercise} 
+                            accessible={true}
+                            accessibilityLabel="Save Exercise button. Saves the exercise and navigates to Exercises view"
+                            />
                     </View>
                     <Button title="Nevermind!" onPress={() => navigation.navigate('DisplayExercisesView',
                         {
                             profile: route.params.profile,
                             username: route.params.username,
                             token: route.params.token
-                        })} />
+                        })} 
+                        accessible={true}
+                        accessibilityLabel="Nevermind button. Ignores current exercise being added and navigates to Exercises view"
+                        />
                 </View>
             </ScrollView>
         </View>
