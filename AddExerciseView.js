@@ -97,7 +97,7 @@ function AddExerciseView({ route, navigation }) {
                     <Text style={{ fontSize: 27, marginBottom: 10, marginRight: 10, fontWeight: "bold" }}>
                         Exercise Details
                     </Text>
-                    <Icon name="add" size={30} color="#000" />
+                    <Icon name="add" size={30} color="#000" accessible={true} accessibilityLabel="Plus icon"/>
                 </View>
                 <Text style={{ fontSize: 15, fontWeight: "bold" }}
                 >Exercise Name</Text>

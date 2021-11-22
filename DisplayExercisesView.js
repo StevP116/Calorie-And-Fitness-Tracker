@@ -104,7 +104,7 @@ function DisplayExerciseView({ route, navigation }) {
             >
                 <View style={styles.button}>
                     <Text style={{ fontSize: 27, marginBottom: 10, marginRight: 10, fontWeight: "bold" }}>Exercises</Text>
-                    <Icon name="fitness" size={30} color="#000" />
+                    <Icon name="fitness" size={30} color="#000" accessible={true} accessibilityLabel="Heart icon"/>
                 </View>
                 {activities.map(activity => <ExerciseView activity={activity} exerciseDisplay={true} token={route.params.token} updateActivities={updateActivities} />)}
                 <View style={styles.button}>
