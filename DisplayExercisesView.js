@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { View, Text, ScrollView, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TextInput, Button, StyleSheet, AccessibilityInfo, TouchableOpacity } from 'react-native';
 import ExerciseView from './ExerciseView';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -10,29 +10,57 @@ function DisplayExerciseView({ route, navigation }) {
     const [caloriesBurned, setCaloriesBurned] = React.useState(0);
     const [activities, setActivities] = React.useState([]);
     const [updater, setUpdater] = React.useState(0);
+    const [screenReaderEnabled, setScreenReaderEnabled] = React.useState(false);
 
     const forceUpdate = React.useCallback(() => updateState({}), []);
 
+    const handleProfileView = () => {
+        navigation.navigate('ProfileScreen',
+            {
+                profile: route.params.profile,
+                username: route.params.username,
+                token: route.params.token
+            })
+    }
+
+    const handleAddExerciseView = () => {
+        navigation.navigate('AddExerciseView',
+            {
+                profile: route.params.profile,
+                username: route.params.username,
+                token: route.params.token
+            })
+    }
+
+    const handleTodayView = () => {
+        navigation.navigate('TodayView',
+            {
+                profile: route.params.profile,
+                username: route.params.username,
+                token: route.params.token
+            })
+    }
+
     const updateActivities = () => {
         fetch("http://cs571.cs.wisc.edu:5000/activities", {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'x-access-token': route.params.token
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': route.params.token
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res) {
+                    setActivities(res.activities);
+                } else {
+                    alert("User activities could not be retrieved.");
                 }
             })
-                .then(res => res.json())
-                .then(res => {
-                    if (res) {
-                        setActivities(res.activities);
-                    } else {
-                        alert("User activities could not be retrieved.");
-                    }
-                })
-                .catch(err => {
-                    alert(err)
-                })
+            .catch(err => {
+                alert(err)
+            })
     }
 
     React.useEffect(() => {
@@ -58,6 +86,12 @@ function DisplayExerciseView({ route, navigation }) {
                 .catch(err => {
                     alert(err)
                 })
+
+            AccessibilityInfo.isScreenReaderEnabled().then(
+                screenReaderEnabled => {
+                    setScreenReaderEnabled(screenReaderEnabled);
+                }
+            );
         });
 
         return unsubscribe;
@@ -68,42 +102,42 @@ function DisplayExerciseView({ route, navigation }) {
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.main}
             >
-            <View style={styles.button}>
-                <Text style={{ fontSize: 27, marginBottom: 10, marginRight: 10, fontWeight: "bold" }}>Exercises</Text>
-                <Icon name="fitness" size={30} color="#000" />
+                <View style={styles.button}>
+                    <Text style={{ fontSize: 27, marginBottom: 10, marginRight: 10, fontWeight: "bold" }}>Exercises</Text>
+                    <Icon name="fitness" size={30} color="#000" />
                 </View>
-            {activities.map(activity => <ExerciseView activity={activity} exerciseDisplay={true} token={route.params.token} updateActivities={updateActivities}/>)}
+                {activities.map(activity => <ExerciseView activity={activity} exerciseDisplay={true} token={route.params.token} updateActivities={updateActivities} />)}
                 <View style={styles.button}>
                     <View style={styles.button1}>
-                        <Button onPress={() => navigation.navigate('ProfileScreen', {
-                            profile: route.params.profile,
-                            username: route.params.username,
-                            token: route.params.token
-                        })}
-                            title="Profile" />
+                        <TouchableOpacity onPress={handleProfileView} title="Profile"
+                            accessible={true}
+                            accessibilityLabel="Profile button"
+                            accessibilityHint="Navigates you to Profile view. All of your daily goals are visible here">
+                            <View style={{ backgroundColor: "#00C1E8", textAlign: "center", height: 35, width: 75, justifyContent: "center" }}>
+                                <Text style={{ color: "white", textAlign: "center", justifyContent: "center" }}>PROFILE</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.button1}>
-                        <Button onPress={() => navigation.navigate('AddExerciseView', {
-                            profile: route.params.profile,
-                            username: route.params.username,
-                            token: route.params.token
-                        })}
-                            title="Add Exercise" 
+                        <TouchableOpacity onPress={handleAddExerciseView} title="Add Exercise"
                             accessible={true}
-                            accessibilityLabel="Add Exercise button. Navigates to Add Exercise view, where you will enter 
-                            exercise details to add an exercise to your account."
-                            />
+                            accessibilityLabel="Add Exercise button"
+                            accessibilityHint="Navigates to Add Exercise view, where you will enter 
+                            exercise details to add an exercise to your account">
+                            <View style={{ backgroundColor: "#00C1E8", textAlign: "center", height: 35, width: 105, justifyContent: "center" }}>
+                                <Text style={{ color: "white", textAlign: "center", justifyContent: "center" }}>ADD EXERCISE</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                    <Button onPress={() => navigation.navigate('TodayView',
-                        {
-                            profile: route.params.profile,
-                            username: route.params.username,
-                            token: route.params.token
-                        })} title="Today View" 
+                    <TouchableOpacity onPress={handleTodayView} title="Today View"
                         accessible={true}
-                            accessibilityLabel="Today View button. Navigates to Today View where you can view exercises 
-                            completed today, as well as progress made towards your daily exercise goal."
-                        />
+                        accessibilityLabel="Today View button"
+                        accessibilityHint="Navigates to Today View where you can view exercises 
+                            completed today, as well as progress made towards your daily exercise goal">
+                        <View style={{ backgroundColor: "#00C1E8", textAlign: "center", height: 35, width: 90, justifyContent: "center" }}>
+                            <Text style={{ color: "white", textAlign: "center", justifyContent: "center" }}>TODAY VIEW</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         </View>

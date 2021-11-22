@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { View, Text, ScrollView, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TextInput, Button, StyleSheet, TouchableOpacity, AccessibilityInfo } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -12,6 +12,29 @@ function AddExerciseView({ route, navigation }) {
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+    const [screenReaderEnabled, setScreenReaderEnabled] = React.useState(false);
+
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+        });
+
+        AccessibilityInfo.isScreenReaderEnabled().then(
+            screenReaderEnabled => {
+                setScreenReaderEnabled(screenReaderEnabled);
+            }
+        );
+
+        return unsubscribe;
+    }, [navigation]);
+
+    const handleNevermind = () => {
+        navigation.navigate('DisplayExercisesView',
+            {
+                profile: route.params.profile,
+                username: route.params.username,
+                token: route.params.token
+            })
+    }
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -77,37 +100,51 @@ function AddExerciseView({ route, navigation }) {
                     <Icon name="add" size={30} color="#000" />
                 </View>
                 <Text style={{ fontSize: 15, fontWeight: "bold" }}
-                accessible={true}
-                accessibilityLabel="Exercise name. Enter the exercise name in the text box below"
                 >Exercise Name</Text>
                 <TextInput placeholderTextColor={'gray'} placeholder='Ex: Jogging' value={exerciseName} onChangeText={setExerciseName} style={styles.input}
+                    accessible={true}
+                    accessibilityLabel="Exercise Name Text Input"
+                    accessibilityHint="Enter Exercise Name here"
+                    placeholder={screenReaderEnabled ? undefined : "Ex: Jogging"}
                 />
                 <Text style={{ fontSize: 15, fontWeight: "bold" }}
-                accessible={true}
-                accessibilityLabel="Duration. Enter the exercise duration in minutes in the text box below"
                 >Duration (minutes)</Text>
-                <TextInput placeholderTextColor={'gray'} value={duration.toString()} onChangeText={setDuration} style={styles.input}
+                <TextInput placeholderTextColor={'gray'} onChangeText={setDuration} style={styles.input}
+                    accessible={true}
+                    accessibilityLabel="Exercise Duration Text Input"
+                    accessibilityHint="Enter Exercise Duration here"
+                    value={screenReaderEnabled ? undefined : duration.toString()}
                 />
                 <Text style={{ fontSize: 15, fontWeight: "bold" }}
-                accessible={true}
-                accessibilityLabel="Calories Burnt. Enter the number of calories that were burned during the exercise in the text box below"
                 >Calories Burnt</Text>
-                <TextInput placeholderTextColor={'gray'} value={caloriesBurned.toString()} onChangeText={setCaloriesBurned} style={styles.input} />
+                <TextInput placeholderTextColor={'gray'} onChangeText={setCaloriesBurned} style={styles.input}
+                    accessible={true}
+                    accessibilityLabel="Calories Burnt Text Input"
+                    accessibilityHint="Enter the number of calories burned during the exercise here"
+                    value={screenReaderEnabled ? undefined : duration.toString()}
+                />
                 <Text style={{ fontSize: 15, fontWeight: "bold" }}
                 >Exercise Date and Time</Text>
                 <Text>{date.toString()}</Text>
                 <View style={styles.button}>
                     <View style={styles.button1}>
-                        <Button
-                            title="Set Date" onPress={showDatepicker} 
+                        <TouchableOpacity onPress={showDatepicker} title="Set Date"
                             accessible={true}
-                            accessibilityLabel="Set Date button. Navigates to the Set Date modal to set the date of the exercise."
-                            />
+                            accessibilityLabel="Set Date Button"
+                            accessibilityHint="Navigates to the Set Date modal to set the date of the exercise">
+                            <View style={{ backgroundColor: "#00C1E8", textAlign: "center", height: 35, width: 75, justifyContent: "center" }}>
+                                <Text style={{ color: "white", textAlign: "center", justifyContent: "center" }}>SET DATE</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                    <Button title="Set Time" onPress={showTimepicker} 
-                    accessible={true}
-                    accessibilityLabel="Set Time button. Navigates to the Set Time modal to set the time of the exercise."
-                    />
+                    <TouchableOpacity onPress={showTimepicker} title="Set Time"
+                        accessible={true}
+                        accessibilityLabel="Set Time Button"
+                        accessibilityHint="Navigates to the Set Time modal to set the time of the exercise">
+                        <View style={{ backgroundColor: "#00C1E8", textAlign: "center", height: 35, width: 75, justifyContent: "center" }}>
+                            <Text style={{ color: "white", textAlign: "center", justifyContent: "center" }}>SET TIME</Text>
+                        </View>
+                    </TouchableOpacity>
                     {show && (
                         <DateTimePicker
                             testID="dateTimePicker"
@@ -122,21 +159,23 @@ function AddExerciseView({ route, navigation }) {
                 <Text style={{ fontSize: 15, marginTop: 30 }}>Looks good! Ready to save your work?</Text>
                 <View style={styles.button}>
                     <View style={styles.button1}>
-                        <Button
-                            title="Save Exercise" onPress={handleSaveExercise} 
+                        <TouchableOpacity onPress={handleSaveExercise} title="Save Exercise"
                             accessible={true}
-                            accessibilityLabel="Save Exercise button. Saves the exercise and navigates to Exercises view"
-                            />
+                            accessibilityLabel="Save Exercise Button"
+                            accessibilityHint="Saves the exercise and navigates to Exercises view">
+                            <View style={{ backgroundColor: "#00C1E8", textAlign: "center", height: 35, width: 110, justifyContent: "center" }}>
+                                <Text style={{ color: "white", textAlign: "center", justifyContent: "center" }}>SAVE EXERCISE</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                    <Button title="Nevermind!" onPress={() => navigation.navigate('DisplayExercisesView',
-                        {
-                            profile: route.params.profile,
-                            username: route.params.username,
-                            token: route.params.token
-                        })} 
+                    <TouchableOpacity onPress={handleNevermind} title="Nevermind"
                         accessible={true}
-                        accessibilityLabel="Nevermind button. Ignores current exercise being added and navigates to Exercises view"
-                        />
+                        accessibilityLabel="Nevermind Button"
+                        accessibilityHint="Ignores current exercise being added and navigates to Exercises view">
+                        <View style={{ backgroundColor: "#00C1E8", textAlign: "center", height: 35, width: 110, justifyContent: "center" }}>
+                            <Text style={{ color: "white", textAlign: "center", justifyContent: "center" }}>NEVERMIND</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         </View>
